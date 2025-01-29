@@ -1,0 +1,10 @@
+{
+  "name": "ifaezdl/outer",
+  "autoload": {
+    "psr-4": {
+      "Router\\": "src/"
+    }
+  },
+  "version": "1.0.0",
+  "require": {}
+}
