@@ -1,10 +1,12 @@
 <?php 
-namespace Routers;
+declare(strict_types=1);
+namespace Router;
+
 class Router {
     
 
         public function __construct() {
-            echo "Router initialized!";
+            // echo "Router initialized!";
         }
         private array $routes = [];
 
@@ -18,6 +20,7 @@ class Router {
         'middlewares' => []
         ];
 
+
         }
         
         private function normalizePath(string $path): string {
@@ -30,20 +33,25 @@ class Router {
 
         public function dispatch(string $path) {
             $path = $this->normalizePath($path);
-            $method = strtoupper($SERVER['REQUESTMETHOD']);
+            $method = strtoupper($_SERVER['REQUEST_METHOD']);
             foreach ($this->routes as $route) {
-            if (!preg_match("#^{$route['path']}$#", $path) ||
-                $route['method'] !== $method) 
-            
+                if (!preg_match("#^" . preg_replace('/\{id\}/', '(\d+)', $route['path']) . "$#", $path, $matches) ||
+                $route['method'] !== $method)
                 {
                     continue;
                 }
+       
+                [$class, $function] = $route['controller'];
+                $controllerInstance = new $class();
+                if (isset($matches[1])){
 
-        [$class, $function] = $route['controller'];
-
-        $controllerInstance = new $class;
-
-        $controllerInstance->{$function}();
+                    $controllerInstance->$function($matches[1]);
+                }
+                else{
+                    $controllerInstance->$function();
+                }
+      
+  
 
         }
 

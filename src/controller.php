@@ -1,7 +1,12 @@
 <?php
-namespace Routers;
-//For a route like /api/v1/users, the controller handles the request and prepares a response.
+namespace Router;
+use Router\JsonHandler;
 class controller { 
+
+    public function __construct(){
+
+        
+    }
     public function home() {
          echo "Home page!"; 
         }
@@ -9,4 +14,16 @@ class controller {
          echo "About page!"; 
         }
 
+    public function staticUser(){
+        
+        $newUser=new JsonHandler();
+        $newUser->ShowData();
+    }
+
+    public function userWithId($id){
+        $newUser=new JsonHandler();
+        $newUser->specifiedUser($id);
+        
+    }
+    }
 ?>
